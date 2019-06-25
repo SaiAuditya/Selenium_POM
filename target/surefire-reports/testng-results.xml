@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testng-results total="5" passed="5" failed="0" skipped="0">
+  <reporter-output>
+  </reporter-output>
+  <suite started-at="2019-06-25T09:54:41Z" name="Suite" finished-at="2019-06-25T09:56:14Z" duration-ms="93437">
+    <groups>
+    </groups>
+    <test started-at="2019-06-25T09:54:41Z" name="Test" finished-at="2019-06-25T09:56:14Z" duration-ms="93437">
+      <class name="com.tests.TestCases">
+        <test-method signature="login_Test_Case_04()[pri:0, instance:com.tests.TestCases@1de5f259]" started-at="2019-06-25T15:24:41Z" name="login_Test_Case_04" finished-at="2019-06-25T15:26:10Z" duration-ms="89365" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- login_Test_Case_04 -->
+        <test-method signature="login_Test_Case_01()[pri:0, instance:com.tests.TestCases@1de5f259]" started-at="2019-06-25T15:24:41Z" name="login_Test_Case_01" finished-at="2019-06-25T15:26:14Z" duration-ms="92737" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- login_Test_Case_01 -->
+        <test-method signature="login_Test_Case_05()[pri:0, instance:com.tests.TestCases@1de5f259]" started-at="2019-06-25T15:24:41Z" name="login_Test_Case_05" finished-at="2019-06-25T15:26:14Z" duration-ms="93297" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- login_Test_Case_05 -->
+        <test-method signature="login_Test_Case_03()[pri:0, instance:com.tests.TestCases@1de5f259]" started-at="2019-06-25T15:24:41Z" name="login_Test_Case_03" finished-at="2019-06-25T15:26:14Z" duration-ms="92668" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- login_Test_Case_03 -->
+        <test-method signature="login_Test_Case_02()[pri:0, instance:com.tests.TestCases@1de5f259]" started-at="2019-06-25T15:24:41Z" name="login_Test_Case_02" finished-at="2019-06-25T15:26:13Z" duration-ms="92574" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- login_Test_Case_02 -->
+        <test-method is-config="true" signature="flush_test()[pri:0, instance:com.tests.TestCases@1de5f259]" started-at="2019-06-25T15:26:14Z" name="flush_test" finished-at="2019-06-25T15:26:14Z" duration-ms="65" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- flush_test -->
+      </class> <!-- com.tests.TestCases -->
+    </test> <!-- Test -->
+  </suite> <!-- Suite -->
+</testng-results>
