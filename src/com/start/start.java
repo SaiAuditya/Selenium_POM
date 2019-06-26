@@ -1,5 +1,6 @@
 package com.start;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
@@ -96,16 +97,12 @@ public class start {
 						+ props.getProperty("ChromeDriverWindows");
 
 				System.setProperty("webdriver.chrome.driver", ChromeDriverPath);
-				DesiredCapabilities options = new DesiredCapabilities();
-				// options.setBinary(ChromeDriverPath);
-				options.setCapability("chrome.binary", ChromeDriverPath);
-
-				options.setCapability(
-						CapabilityType.UNEXPECTED_ALERT_BEHAVIOUR,
-						UnexpectedAlertBehaviour.ACCEPT);
-				options.setCapability(ChromeOptions.CAPABILITY, options);
-				options.setCapability("seleniumProtocol", "WebDriver");
-
+				ChromeOptions options = new ChromeOptions();
+				
+				options.setBinary(ChromeDriverPath);
+			
+				//options.addArguments("--log-level=3");
+                
 				String Type = props.getProperty("Type");
 
 				if (Type.equals("Local")) {
@@ -117,9 +114,9 @@ public class start {
 				} else {
 					String IPAddress = props.getProperty("IPAddress");
 					remotedriver.set(new RemoteWebDriver(new URL(
-							"http://localhost:4444/wd/hub"), (Capabilities) options));
+							"http://localhost:4444/wd/hub"), options));
 					remotedriver.set(new RemoteWebDriver(new URL(IPAddress),
-							(Capabilities) options));
+							options));
 					driver = remotedriver.get();
 					driver.manage().window().maximize();
 					driver.get(props.getProperty("URL"));

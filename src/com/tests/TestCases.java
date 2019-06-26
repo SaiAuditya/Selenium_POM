@@ -46,12 +46,12 @@ public class TestCases {
 	{
 		System.out.println("Calling after test");
 	}
-	@BeforeGroups
+	@BeforeGroups("Sanity")
 	public void beforeGroups(){
 		System.out.println("Calling before groups");
 	}
 	
-	@AfterGroups
+	@AfterGroups("Sanity")
 	public void afterGroups()
 	{
 		System.out.println("Calling after groups");
@@ -77,6 +77,7 @@ public class TestCases {
 		System.out.println("Calling after method");
 	}
 
+	
 	@Test(enabled = false, groups = {"Sanity"})
 	public void login_Test_Case_01() {
 		try {
@@ -141,11 +142,8 @@ public class TestCases {
 		try {
 			String SheetName = Thread.currentThread().getStackTrace()[1].getMethodName();
 
-			System.out.println("Test3");
-
 			start.xldriver.SetExcelSheet(SheetPath, "login_Test_Case_01");
-			// start.set_Logger(SheetName);
-
+			
 			ExtentTest test = extent.startTest(SheetName);
 			int rows = start.xldriver.get_used_rows();
 
@@ -153,10 +151,10 @@ public class TestCases {
 
 				st = new start();
 				st.set_Logger(test);
+				
 				String username = start.xldriver.getExcelData("username", i);
 				String password = start.xldriver.getExcelData("password", i);
-				System.out.println("Password " + password);
-				System.out.println("Password " + username);
+				
 				st.launch_browser().goTo_Home().set_text("ConsolidatedChaos").click_search().goTo_searchPage()
 						.opensite();
 

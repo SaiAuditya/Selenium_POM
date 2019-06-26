@@ -4,6 +4,7 @@ com\start\start.class
 com\pages\ExtReport.class
 com\pages\landing_page.class
 com\pages\ExtTest.class
+com\pages\search_page.class
 com\tests\TestCases.class
 com\utilities\reference.class
 com\utilities\ExcelManager.class
