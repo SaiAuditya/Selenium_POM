@@ -1,0 +1,19 @@
+# Created at 2019-06-26T10:12:23.723
+Boot Manifest-JAR contains absolute paths in classpath 'D:\Selenium_POM\Selenium_POM\target\test-classes'
+Hint: <argLine>-Djdk.net.URLClassPath.disableClassPathURLCheck=true</argLine>
+
+# Created at 2019-06-26T10:12:27.277
+WARNING: An illegal reflective access operation has occurred
+
+# Created at 2019-06-26T10:12:27.278
+WARNING: Illegal reflective access by org.apache.poi.openxml4j.util.ZipSecureFile$1 (file:/C:/Users/venkata_srinadhuni/.m2/repository/org/apache/poi/poi-ooxml/3.15/poi-ooxml-3.15.jar) to field java.io.FilterInputStream.in
+
+# Created at 2019-06-26T10:12:27.281
+WARNING: Please consider reporting this to the maintainers of org.apache.poi.openxml4j.util.ZipSecureFile$1
+
+# Created at 2019-06-26T10:12:27.284
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+
+# Created at 2019-06-26T10:12:27.286
+WARNING: All illegal access operations will be denied in a future release
+

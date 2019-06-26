@@ -13,7 +13,6 @@ import com.utilities.reference;
 
 public class landing_page extends pagefactory {
 
-	//public ExtentTest test;
 	reference ref = null;
 
 	@FindBy(linkText = "MY PROFILE")

@@ -77,9 +77,6 @@ public class home extends pagefactory {
 		} catch (Exception e) {
 
 		}
-
-		//staging the changes
-		Thread.sleep(500);
 		return this;
 	}
 

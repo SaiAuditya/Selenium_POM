@@ -1,7 +1,5 @@
 package com.utilities;
 
-//import static org.testng.Assert.assertTrue;
-
 import java.io.File;
 import java.io.IOException;
 import java.text.DateFormat;
@@ -9,12 +7,12 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
@@ -23,10 +21,7 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.pagefactory.AjaxElementLocatorFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.FluentWait;
-import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
 import com.pages.pagefactory;
 import com.relevantcodes.extentreports.ExtentTest;
 
@@ -34,34 +29,34 @@ public class reference extends pagefactory {
 
 	public WebDriver driver;
 	public ExtentTest logger;
+	WebDriverWait wait;
 
 	public reference(WebDriver driver) {
 		super(driver);
-		AjaxElementLocatorFactory agaxFactory = new AjaxElementLocatorFactory(
-				driver, 30);
+		AjaxElementLocatorFactory agaxFactory = new AjaxElementLocatorFactory(driver, 30);
 		PageFactory.initElements(agaxFactory, this);
 		this.driver = driver;
-		
+		wait = new WebDriverWait(driver, 30);
+
 	}
 
 	public void select_dropdown(String dropdown_css, String texttoselect)
 
 	{
 		try {
-			WebDriverWait wait = new WebDriverWait(driver, 30);
-			WebElement dropdown = wait.until(ExpectedConditions
-					.elementToBeClickable(driver.findElement(By
-							.cssSelector(dropdown_css))));
+
+			WebElement dropdown = wait
+					.until(ExpectedConditions.elementToBeClickable(driver.findElement(By.cssSelector(dropdown_css))));
 			dropdown.click();
 			dropdown.sendKeys(Keys.CONTROL, "a", Keys.BACK_SPACE);
 			dropdown.sendKeys(texttoselect, " ", Keys.BACK_SPACE);
 
 			String option_to_select = "//span/b[text()='" + texttoselect + "']";
 
-			// dropdown.sendKeys();
-			List<WebElement> options = driver.findElements(By
-					.xpath(option_to_select));
-			wait.until(ExpectedConditions.visibilityOfAllElements(options));
+			wait.ignoring(NoSuchElementException.class);
+
+			wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.xpath(option_to_select)));
+			List<WebElement> options = driver.findElements(By.xpath(option_to_select));
 
 			for (WebElement option : options) {
 				option.click();
@@ -73,9 +68,11 @@ public class reference extends pagefactory {
 	}
 
 	public void select_button(String button_name) throws InterruptedException {
-		Thread.sleep(500);
-		List<WebElement> buttons = driver.findElements(By
-				.cssSelector("div.button.rules-btn"));
+
+		wait.ignoring(NoSuchElementException.class);
+
+		wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.cssSelector("div.button.rules-btn")));
+		List<WebElement> buttons = driver.findElements(By.cssSelector("div.button.rules-btn"));
 		System.out.println(buttons.size());
 		for (WebElement button : buttons) {
 			System.out.println(button.getText());
@@ -91,8 +88,7 @@ public class reference extends pagefactory {
 		e.click();
 	}
 
-	public void select_filter(String gridname, String coulumn, String filterText)
-			throws InterruptedException {
+	public void select_filter(String gridname, String coulumn, String filterText) throws InterruptedException {
 
 		WebElement e_grid = driver.findElement(By.cssSelector(gridname));
 		List<WebElement> columns = e_grid.findElements(By.tagName("div"));
@@ -102,14 +98,12 @@ public class reference extends pagefactory {
 				actions.moveToElement(e);
 				actions.build().perform();
 
-				List<WebElement> dropdowns = driver.findElements(By
-						.className("jqx-icon-arrow-down"));
+				List<WebElement> dropdowns = driver.findElements(By.className("jqx-icon-arrow-down"));
 				System.out.println(dropdowns.size());
 
 				for (WebElement ed : dropdowns) {
 
 					try {
-
 						if (ed.isDisplayed()) {
 							ed.click();
 							break;
@@ -119,11 +113,9 @@ public class reference extends pagefactory {
 					}
 
 				}
-				WebElement filterTextbox = driver.findElement(By
-						.className("filtertext1moreAccountsGrid"));
+				WebElement filterTextbox = driver.findElement(By.className("filtertext1moreAccountsGrid"));
 				filterTextbox.sendKeys(filterText);
-				WebElement fliterbutton = driver.findElement(By
-						.id("filterbuttonmoreAccountsGrid"));
+				WebElement fliterbutton = driver.findElement(By.id("filterbuttonmoreAccountsGrid"));
 				fliterbutton.click();
 				break;
 			}
@@ -131,34 +123,28 @@ public class reference extends pagefactory {
 	}
 
 	public void select_row_in_table(String text) throws InterruptedException {
-		WebDriverWait wait = new WebDriverWait(driver, 30);
+
 		wait_popupready();
 
-		wait.until(ExpectedConditions.invisibilityOfElementWithText(
-				By.className("jqx-fill-state-normal"), "Loading..."));
-		WebElement row = wait.until(ExpectedConditions
-				.elementToBeClickable(driver.findElement(By
-						.id("row0moreAccountsGrid"))));
+		wait.until(
+				ExpectedConditions.invisibilityOfElementWithText(By.className("jqx-fill-state-normal"), "Loading..."));
+		WebElement row = wait
+				.until(ExpectedConditions.elementToBeClickable(driver.findElement(By.id("row0moreAccountsGrid"))));
 		row.click();
-		Thread.sleep(500);
-		Wait<WebDriver> fluentwait = new FluentWait<WebDriver>(driver)
-				.withTimeout(20, TimeUnit.SECONDS)
-				.pollingEvery(1, TimeUnit.SECONDS)
-				.ignoring(java.util.NoSuchElementException.class);
-		fluentwait.until(ExpectedConditions.invisibilityOfElementWithText(
-				By.className("jqx-fill-state-normal"), "Loading..."));
+
+		wait.ignoring(NoSuchElementException.class);
+		wait.until(
+				ExpectedConditions.invisibilityOfElementWithText(By.className("jqx-fill-state-normal"), "Loading..."));
 
 	}
 
 	public void select_standard_button(String text) throws InterruptedException {
-		// btn-standard
-		// Thread.sleep(500);
+
 		System.out.println("Button input text" + text);
 		WebDriverWait wait = new WebDriverWait(driver, 30);
-		List<WebElement> buttons = wait.until(ExpectedConditions
-				.presenceOfAllElementsLocatedBy(By
-						.cssSelector("button.btn-standard.blue-btn")));
-		Thread.sleep(500);
+		List<WebElement> buttons = wait.until(
+				ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector("button.btn-standard.blue-btn")));
+
 		System.out.println(buttons.size());
 		for (WebElement button : buttons) {
 			System.out.println(button.getText());
@@ -175,24 +161,17 @@ public class reference extends pagefactory {
 	}
 
 	public void wait_popupready() {
-		WebDriverWait wait = new WebDriverWait(driver, 30);
-		// jqx-fill-state-normal
-		wait.until(ExpectedConditions.invisibilityOfElementLocated(By
-				.className("jqx-grid-load")));
+			wait.until(ExpectedConditions.invisibilityOfElementLocated(By.className("jqx-grid-load")));
 	}
 
 	public void enter_text_by_id(String id, String text) {
-
 		driver.findElement(By.id(id)).sendKeys(text);
 	}
 
 	public void click_calander(String id) throws InterruptedException {
 
-		WebElement cal = driver.findElement(By.id(id)).findElement(
-				By.className("jqx-icon-calendar"));
+		WebElement cal = driver.findElement(By.id(id)).findElement(By.className("jqx-icon-calendar"));
 		cal.click();
-		Thread.sleep(500);
-
 	}
 
 	public void select_date(String date) throws InterruptedException {
@@ -201,7 +180,6 @@ public class reference extends pagefactory {
 		int year_to_select = year;
 		int month_to_select = 0;
 		int day_to_select = 0;
-		// final String splitter="\\+";
 
 		System.out.println(date);
 		if (date.contains("today")) {
@@ -222,15 +200,11 @@ public class reference extends pagefactory {
 			month_to_select = Integer.valueOf((date.split("/")[1]));
 			day_to_select = Integer.valueOf((date.split("/")[0]));
 		}
-		// WebDriverWait wait = new WebDriverWait(driver, 30);
-		// wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div.jqx-calendar-title-content")));
-		Thread.sleep(1000);
-		// System.out.println(date.split("/")[2]);
 
-		// Thread.sleep(5000);
+		Thread.sleep(1000);
+		
 		int act_year = year;
-		List<WebElement> titles = driver.findElements(By
-				.cssSelector("div.jqx-calendar-title-content"));
+		List<WebElement> titles = driver.findElements(By.cssSelector("div.jqx-calendar-title-content"));
 		{
 			for (WebElement title : titles) {
 				if (title.isDisplayed()) {
@@ -242,35 +216,26 @@ public class reference extends pagefactory {
 		}
 
 		int number_of_clicks = year_to_select - act_year;
-		// System.out.println(number_of_clicks);
-		Thread.sleep(500);
+
 		for (int i = 0; i < number_of_clicks; i++) {
 
 			List<WebElement> arrows = driver
-					.findElements(By
-							.cssSelector("div.jqx-calendar-title-navigation.jqx-icon-arrow-right"));
+					.findElements(By.cssSelector("div.jqx-calendar-title-navigation.jqx-icon-arrow-right"));
 			for (WebElement arrow : arrows) {
 				if (arrow.isDisplayed()) {
 					arrow.click();
 				}
 			}
 
-			Thread.sleep(500);
-
 		}
 
-		Thread.sleep(500);
 		List<WebElement> month_to_select_list = driver
-				.findElements(By
-						.cssSelector("td.jqx-rc-all.jqx-item.jqx-calendar-cell.jqx-calendar-cell-year"));
-		// System.out.println(month_to_select_list.size());
+				.findElements(By.cssSelector("td.jqx-rc-all.jqx-item.jqx-calendar-cell.jqx-calendar-cell-year"));
 		int i = 1;
 		for (WebElement month : month_to_select_list) {
 			if (month.isDisplayed()) {
 				if (month_to_select == i) {
-					// System.out.println(month.getText());
 					month.click();
-					Thread.sleep(1500);
 					break;
 				}
 				i += 1;
@@ -278,8 +243,7 @@ public class reference extends pagefactory {
 		}
 
 		List<WebElement> day_to_select_list = driver
-				.findElements(By
-						.cssSelector(".jqx-rc-all.jqx-item.jqx-calendar-cell.jqx-calendar-cell-month"));
+				.findElements(By.cssSelector(".jqx-rc-all.jqx-item.jqx-calendar-cell.jqx-calendar-cell-month"));
 
 		for (WebElement day : day_to_select_list) {
 			if (day.isDisplayed()) {
@@ -288,7 +252,6 @@ public class reference extends pagefactory {
 
 					if (Integer.valueOf(day.getText()) == day_to_select) {
 						day.click();
-						Thread.sleep(500);
 						break;
 					}
 				}
@@ -299,14 +262,11 @@ public class reference extends pagefactory {
 	}
 
 	public boolean verify_page_title(String title) throws InterruptedException {
-		Thread.sleep(5000);
 		boolean flag = false;
-		List<WebElement> title_texts = driver.findElements(By
-				.className("gac-title-style"));
+		List<WebElement> title_texts = driver.findElements(By.className("gac-title-style"));
 		for (WebElement title_in : title_texts) {
 			if (title_in.isDisplayed()) {
 				System.out.println(title_in.getText());
-				// assertTrue(true, "Title is displayed");
 				flag = true;
 			}
 		}
@@ -320,8 +280,7 @@ public class reference extends pagefactory {
 
 	public void select_breadcrumb(String linkname) throws InterruptedException {
 
-		List<WebElement> bclinks = driver.findElements(By
-				.cssSelector("span.breadcrumb-active.ng-binding.ng-scope"));
+		List<WebElement> bclinks = driver.findElements(By.cssSelector("span.breadcrumb-active.ng-binding.ng-scope"));
 		System.out.println("Links " + bclinks.size());
 
 		for (WebElement link : bclinks) {
@@ -329,7 +288,6 @@ public class reference extends pagefactory {
 			if (link.getText().trim().equalsIgnoreCase(linkname)) {
 				link.click();
 				System.out.println("Clicked the home link");
-				Thread.sleep(1000);
 				break;
 			}
 		}
@@ -338,15 +296,12 @@ public class reference extends pagefactory {
 	public void click_item_id(String id) throws InterruptedException {
 
 		WebElement id_item = driver.findElement(By.id(id));
-		((JavascriptExecutor) driver).executeScript(
-				"arguments[0].scrollIntoView();", id_item);
+		((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView();", id_item);
 		id_item.click();
-		Thread.sleep(500);
 
 	}
 
-	public void select_filter_search(String gridname, String coulumn,
-			String filterText) throws InterruptedException {
+	public void select_filter_search(String gridname, String coulumn, String filterText) throws InterruptedException {
 
 		WebElement e_grid = driver.findElement(By.id(gridname));
 		List<WebElement> columns = e_grid.findElements(By.tagName("div"));
@@ -355,9 +310,7 @@ public class reference extends pagefactory {
 				Actions actions = new Actions(driver);
 				actions.moveToElement(e);
 				actions.build().perform();
-				Thread.sleep(500);
-				List<WebElement> dropdowns = e_grid.findElements(By
-						.className("jqx-icon-arrow-down"));
+				List<WebElement> dropdowns = e_grid.findElements(By.className("jqx-icon-arrow-down"));
 				System.out.println(dropdowns.size());
 
 				for (WebElement ed : dropdowns) {
@@ -373,25 +326,19 @@ public class reference extends pagefactory {
 					}
 
 				}
-				WebElement filterTextbox = driver.findElement(By
-						.className("filtertext1searchResultsGridsearchWells"));
+				WebElement filterTextbox = driver.findElement(By.className("filtertext1searchResultsGridsearchWells"));
 				filterTextbox.sendKeys(filterText);
-				WebElement fliterbutton = driver.findElement(By
-						.id("filterbuttonsearchResultsGridsearchWells"));
+				WebElement fliterbutton = driver.findElement(By.id("filterbuttonsearchResultsGridsearchWells"));
 				fliterbutton.click();
 				break;
 			}
 		}
 	}
 
-	public boolean select_row_in_wells_search_table(String text)
-			throws InterruptedException {
+	public boolean select_row_in_wells_search_table(String text) throws InterruptedException {
 		try {
 
 			wait_popupready();
-			Thread.sleep(500);
-
-			Thread.sleep(500);
 
 			return true;
 		} catch (Exception e) {
@@ -408,10 +355,8 @@ public class reference extends pagefactory {
 			DateFormat dateFormat = new SimpleDateFormat("yyyy_dd_MMM_HH_mm_ss");
 			Date date = new Date();
 			String getCurrentDate = dateFormat.format(date);
-			File scrFile = ((TakesScreenshot) driver)
-					.getScreenshotAs(OutputType.FILE);
-			String path = "./screenshots" + "/" + "screen_" + getCurrentDate
-					+ ".png";
+			File scrFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+			String path = "./screenshots" + "/" + "screen_" + getCurrentDate + ".png";
 			System.out.println("Path : " + path);
 			File dest = new File(path);
 			FileUtils.copyFile(scrFile, dest);

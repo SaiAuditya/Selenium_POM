@@ -15,7 +15,7 @@ public class TestCases {
 	public static String SheetPath = "./data/TestData.xlsx";
 	public ExtentReports extent = ExtReport.getReport();
 
-	@Test
+	@Test(enabled=false)
 	public void login_Test_Case_01() {
 		try {
 			String SheetName = Thread.currentThread().getStackTrace()[1]
@@ -29,8 +29,7 @@ public class TestCases {
 				st = new start();
 				st.set_Logger(test);
 				String username = start.xldriver.getExcelData("username", i);
-				String password = start.xldriver.getExcelData("password", i);
-				System.out.println("Password " + password);
+				System.out.println("username " + username);
 				
 				st.launch_browser().goTo_Home().set_text("Parallel testing").click_search();		
 			}
@@ -45,7 +44,7 @@ public class TestCases {
 		}
 	}
 	
-	@Test
+	@Test(enabled=false)
 	public void login_Test_Case_02() {
 		try {
 			String SheetName = Thread.currentThread().getStackTrace()[1]
@@ -64,6 +63,7 @@ public class TestCases {
 				String username = start.xldriver.getExcelData("username", i);
 				String password = start.xldriver.getExcelData("password", i);
 				System.out.println("Password " + password);
+				System.out.println("Password " + username);
 				st.launch_browser().goTo_Home().set_text("thread safe programme").click_search();
 				
 			}
@@ -79,7 +79,7 @@ public class TestCases {
 	}
 
 	
-	@Test
+	@Test(enabled=true)
 	public void login_Test_Case_03() {
 		try {
 			String SheetName = Thread.currentThread().getStackTrace()[1]
@@ -100,7 +100,9 @@ public class TestCases {
 				String username = start.xldriver.getExcelData("username", i);
 				String password = start.xldriver.getExcelData("password", i);
 				System.out.println("Password " + password);
-				st.launch_browser().goTo_Home().set_text("Parallel testing").click_search();
+				System.out.println("Password " + username);
+				st.launch_browser().goTo_Home().set_text("ConsolidatedChaos")
+				.click_search().goTo_searchPage().opensite();
 						
 			}
 
@@ -115,78 +117,6 @@ public class TestCases {
 		}
 	}
 
-	
-	@Test
-	public void login_Test_Case_04() {
-		try {
-			String SheetName = Thread.currentThread().getStackTrace()[1]
-					.getMethodName();
-			
-			System.out.println("Test4");
-
-			ExtentTest test = extent.startTest(SheetName);
-			
-			start.xldriver.SetExcelSheet(SheetPath, "login_Test_Case_01");
-			st.set_Logger(test);
-
-			int rows = start.xldriver.get_used_rows();
-
-			for (int i = 1; i <= rows; i++) {
-
-				st = new start();
-				String username = start.xldriver.getExcelData("username", i);
-				String password = start.xldriver.getExcelData("password", i);
-				System.out.println("Password " + password);
-				st.launch_browser().goTo_Home().set_text("Parallel testing").click_search();
-				
-						
-			}
-
-		} catch (Exception e) {
-			ExtTest.getTest().log(LogStatus.FAIL, "unexpected error "
-					+ e.getStackTrace().toString());
-			e.printStackTrace();
-			extent.flush();
-		} finally {
-			//start.extent.flush();
-		}
-	}
-	
-	@Test
-	public void login_Test_Case_05() {
-		try {
-			String SheetName = Thread.currentThread().getStackTrace()[1]
-					.getMethodName();
-			
-			System.out.println("Test5");
-			
-			ExtentTest test = extent.startTest(SheetName);
-			
-			start.xldriver.SetExcelSheet(SheetPath, "login_Test_Case_01");
-		
-			int rows = start.xldriver.get_used_rows();
-			
-			st.set_Logger(test);
-
-			for (int i = 1; i <= rows; i++) {
-
-				st = new start();
-				String username = start.xldriver.getExcelData("username", i);
-				String password = start.xldriver.getExcelData("password", i);
-				System.out.println("Password " + password);
-				st.launch_browser().goTo_Home().set_text("Parallel testing").click_search();
-						
-			}
-
-		} catch (Exception e) {
-			ExtTest.getTest().log(LogStatus.FAIL, "unexpected error "
-					+ e.getStackTrace().toString());
-			e.printStackTrace();
-			extent.flush();
-		} finally {
-			//start.extent.flush();
-		}
-	}
 		
 @AfterClass
 public void flush_test()

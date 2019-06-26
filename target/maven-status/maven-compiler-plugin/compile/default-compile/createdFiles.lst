@@ -1,9 +1,9 @@
 com\pages\pagefactory.class
-com\pages\ExtTest.class
 com\pages\home.class
 com\start\start.class
-com\tests\TestCases.class
-com\utilities\reference.class
 com\pages\ExtReport.class
 com\pages\landing_page.class
+com\pages\ExtTest.class
+com\tests\TestCases.class
+com\utilities\reference.class
 com\utilities\ExcelManager.class

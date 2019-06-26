@@ -1,14 +1,12 @@
 package com.pages;
 
 import org.openqa.selenium.WebDriver;
-
-import com.relevantcodes.extentreports.ExtentTest;
-
 public class pagefactory {
 
-	//protected ThreadLocal<WebDriver> wbdriver = new ThreadLocal<WebDriver>();
 	WebDriver driver;
 
+	//THis is page factory class contains goto links for each page class.
+	
 	public pagefactory(WebDriver driver) {
 		this.driver = (driver);
 		
@@ -20,6 +18,11 @@ public class pagefactory {
 
 	public landing_page goTo_landing() {
 		return new landing_page(driver);
+	}
+	
+	public search_page goTo_searchPage()
+	{
+		return new search_page(driver);
 	}
 	
 	public void tearDown() {
