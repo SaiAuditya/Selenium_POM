@@ -2,8 +2,16 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="Suite" parallel="methods" thread-count="5">
   <test name="Test" thread-count="5">
-    <classes>
+   
+    <groups>
+    <run>
+    <include name="Sanity"/>
+    </run>
+    </groups>
+    
+     <classes>
       <class name="com.tests.TestCases"/>
     </classes>
+    
   </test> <!-- Test -->
 </suite> <!-- Suite -->
