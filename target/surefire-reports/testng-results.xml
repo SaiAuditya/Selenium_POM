@@ -2,16 +2,16 @@
 <testng-results total="1" passed="1" failed="0" skipped="0">
   <reporter-output>
   </reporter-output>
-  <suite started-at="2019-06-26T04:55:07Z" name="Suite" finished-at="2019-06-26T04:55:34Z" duration-ms="27409">
+  <suite started-at="2019-06-26T06:23:15Z" name="Suite" finished-at="2019-06-26T06:23:57Z" duration-ms="42572">
     <groups>
     </groups>
-    <test started-at="2019-06-26T04:55:07Z" name="Test" finished-at="2019-06-26T04:55:34Z" duration-ms="27409">
+    <test started-at="2019-06-26T06:23:15Z" name="Test" finished-at="2019-06-26T06:23:57Z" duration-ms="42572">
       <class name="com.tests.TestCases">
-        <test-method signature="login_Test_Case_03()[pri:0, instance:com.tests.TestCases@1de5f259]" started-at="2019-06-26T10:25:07Z" name="login_Test_Case_03" finished-at="2019-06-26T10:25:34Z" duration-ms="27221" status="PASS">
+        <test-method signature="login_Test_Case_03()[pri:0, instance:com.tests.TestCases@1de5f259]" started-at="2019-06-26T11:53:15Z" name="login_Test_Case_03" finished-at="2019-06-26T11:53:57Z" duration-ms="42414" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- login_Test_Case_03 -->
-        <test-method is-config="true" signature="flush_test()[pri:0, instance:com.tests.TestCases@1de5f259]" started-at="2019-06-26T10:25:34Z" name="flush_test" finished-at="2019-06-26T10:25:34Z" duration-ms="160" status="PASS">
+        <test-method is-config="true" signature="flush_test()[pri:0, instance:com.tests.TestCases@1de5f259]" started-at="2019-06-26T11:53:57Z" name="flush_test" finished-at="2019-06-26T11:53:57Z" duration-ms="123" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- flush_test -->
