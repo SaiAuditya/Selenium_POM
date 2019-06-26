@@ -10,6 +10,7 @@ import org.openqa.selenium.support.pagefactory.AjaxElementLocatorFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import com.relevantcodes.extentreports.LogStatus;
 import com.utilities.reference;
 
 public class search_page extends pagefactory {
@@ -34,6 +35,8 @@ public class search_page extends pagefactory {
 		wait.ignoring(NoSuchElementException.class);
 		wait.until(ExpectedConditions.presenceOfElementLocated(By.partialLinkText("consolidatedchaos")));
 		myblogslink.click();
+		ExtTest.getTest().log(LogStatus.PASS, "Site opened successfully"
+				+ ExtTest.getTest().addScreenCapture(ref.getScreenshot()));
 		return this;
 	}
 }

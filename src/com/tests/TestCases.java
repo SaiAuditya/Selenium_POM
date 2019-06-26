@@ -9,11 +9,11 @@ import com.relevantcodes.extentreports.ExtentTest;
 import com.relevantcodes.extentreports.LogStatus;
 import com.start.start;
 
-//@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class TestCases {
 	public start st = null;
 	public static String SheetPath = "./data/TestData.xlsx";
 	public ExtentReports extent = ExtReport.getReport();
+	
 
 	@Test(enabled=false)
 	public void login_Test_Case_01() {
