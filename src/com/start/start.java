@@ -5,9 +5,11 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Properties;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
 
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.UnexpectedAlertBehaviour;
@@ -16,6 +18,8 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.ie.InternetExplorerOptions;
+import org.openqa.selenium.logging.LogType;
+import org.openqa.selenium.logging.LoggingPreferences;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -97,11 +101,22 @@ public class start {
 						+ props.getProperty("ChromeDriverWindows");
 
 				System.setProperty("webdriver.chrome.driver", ChromeDriverPath);
+				System.setProperty("webdriver.chrome.logfile", "D:\\chromedriver.log");
+				System.setProperty("webdriver.chrome.verboseLogging", "true");
 				ChromeOptions options = new ChromeOptions();
 				
 				options.setBinary(ChromeDriverPath);
-			
+				//options.addArguments("--no-sandbox");
+				options.addArguments("--disable-dev-shm-usage");
+				options.setExperimentalOption("useAutomationExtension", false);
 				//options.addArguments("--log-level=3");
+				
+				LoggingPreferences preferences = new LoggingPreferences();
+			    preferences.enable(LogType.BROWSER, Level.INFO);
+			    options.setCapability(CapabilityType.LOGGING_PREFS, preferences);
+
+			    DesiredCapabilities theCapabilities = DesiredCapabilities.chrome();
+			    theCapabilities.setCapability(ChromeOptions.CAPABILITY, options);
                 
 				String Type = props.getProperty("Type");
 
@@ -114,9 +129,9 @@ public class start {
 				} else {
 					String IPAddress = props.getProperty("IPAddress");
 					remotedriver.set(new RemoteWebDriver(new URL(
-							"http://localhost:4444/wd/hub"), options));
+							"http://localhost:4444/wd/hub"), theCapabilities));
 					remotedriver.set(new RemoteWebDriver(new URL(IPAddress),
-							options));
+							theCapabilities));
 					driver = remotedriver.get();
 					driver.manage().window().maximize();
 					driver.get(props.getProperty("URL"));
