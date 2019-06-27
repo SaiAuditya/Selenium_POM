@@ -6,6 +6,9 @@ public class pagefactory {
 	WebDriver driver;
 
 	//THis is page factory class contains goto links for each page class.
+	//THis is used to navigate between pages. All the pages extends the Pagefactory.
+	//All page class objects have access to methods in this class as then extend this.
+	//By that means all page class objects have visibility to "goto" methods in this class.
 	
 	public pagefactory(WebDriver driver) {
 		this.driver = (driver);

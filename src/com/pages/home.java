@@ -100,5 +100,16 @@ public class home extends pagefactory {
 		ExtTest.getTest().log(LogStatus.PASS, "Clicked button logon");
 		return this;
 	}
+	
+	public home verify_page_title(String titleText)
+	{
+		if (driver.getTitle().contains(titleText))
+			ExtTest.getTest().log(LogStatus.PASS, "site opened successfully"
+					+ ExtTest.getTest().addScreenCapture(ref.getScreenshot()));
+		else
+			ExtTest.getTest().log(LogStatus.FAIL, "site is down or internet may causing the issue"
+					+ ExtTest.getTest().addScreenCapture(ref.getScreenshot()));
+	  	return this;
+	}
 
 }

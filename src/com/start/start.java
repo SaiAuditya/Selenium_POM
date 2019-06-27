@@ -16,6 +16,8 @@ import org.openqa.selenium.UnexpectedAlertBehaviour;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.ie.InternetExplorerOptions;
 import org.openqa.selenium.logging.LogType;
@@ -32,23 +34,20 @@ import com.utilities.ExcelManager;
 
 public class start {
 
-	public static String browser = "", IEDriverPath = "",
-			ChromeDriverPath = "", AppUrl = "", FirefoxDriverPath = "";
+	public static String browser = "", IEDriverPath = "", ChromeDriverPath = "", AppUrl = "", FirefoxDriverPath = "";
 
 	public WebDriver driver = null;
 	public static String url;
 	public static ExcelManager xldriver = new ExcelManager();
-	// public static ExtentTest logger;
+
 	public ThreadLocal<ExtentTest> logging = new ThreadLocal<>();
-	// public static ExtentTest logger;
+
 	public static Properties props = null;
 	public ThreadLocal<RemoteWebDriver> remotedriver = null;
 
-	public static Calendar cal = Calendar.getInstance(TimeZone
-			.getTimeZone("GMT"));
+	public static Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
 	public static long time = cal.getTimeInMillis();
 	protected ThreadLocal<WebDriver> wbdriver = new ThreadLocal<WebDriver>();
-
 
 	@SuppressWarnings("finally")
 	public pagefactory launch_browser() {
@@ -60,67 +59,51 @@ public class start {
 				IEDriverPath = props.getProperty("IEDriver");
 
 				InternetExplorerOptions options = new InternetExplorerOptions();
-				options.setCapability(
-						InternetExplorerDriver.INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS,
-						true);
+				options.setCapability(InternetExplorerDriver.INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS, true);
 				options.setCapability("ignoreZoomSetting", true);
 				options.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true);
 				options.setCapability(CapabilityType.SUPPORTS_ALERTS, true);
-				options.setCapability(
-						CapabilityType.UNEXPECTED_ALERT_BEHAVIOUR, true);
+				options.setCapability(CapabilityType.UNEXPECTED_ALERT_BEHAVIOUR, true);
 				options.setCapability(CapabilityType.SUPPORTS_JAVASCRIPT, true);
-				options.setCapability(
-						CapabilityType.SUPPORTS_APPLICATION_CACHE, false);
+				options.setCapability(CapabilityType.SUPPORTS_APPLICATION_CACHE, false);
 				System.setProperty("webdriver.ie.driver", IEDriverPath);
 
 				wbdriver.set(new InternetExplorerDriver(options));
 				driver = wbdriver.get();
 
 				driver.manage().window().maximize();
-				driver.manage().timeouts()
-						.pageLoadTimeout(120, TimeUnit.SECONDS);
+				driver.manage().timeouts().pageLoadTimeout(120, TimeUnit.SECONDS);
 				System.out.println("IE Browser launched");
+
 				driver.get(props.getProperty("URL"));
 			} else if (browser.equalsIgnoreCase("FF")) {
-				FirefoxDriverPath = System.getProperty("user.dir")
-						+ props.getProperty("GeckoDriverWindows");
+				FirefoxDriverPath = System.getProperty("user.dir") + props.getProperty("GeckoDriverWindows");
 				System.setProperty("webdriver.gecko.driver", FirefoxDriverPath);
-				DesiredCapabilities capabilities = DesiredCapabilities
-						.firefox();
-				capabilities.setCapability("marionette", true);
+				FirefoxOptions capabilities = new FirefoxOptions();
 				capabilities.setCapability("platform", "WINDOWS");
 
-				driver = new RemoteWebDriver(new URL(
-						"http://localhost:4444/wd/hub"), capabilities);
+				driver = new FirefoxDriver(capabilities);
 				driver.manage().window().maximize();
 				driver.get(props.getProperty("URL"));
 				System.out.println("FireFox Driver Is Launched.");
+				wbdriver.set(driver);
+				wbdriver.get().manage().window().maximize();
+				wbdriver.get().manage().timeouts().pageLoadTimeout(200, TimeUnit.SECONDS);
+				wbdriver.get().get(props.getProperty("URL"));
+
+
 			} else if (browser.equalsIgnoreCase("Chrome")) {
 				System.out.println("In Chrome Browser");
-				ChromeDriverPath = System.getProperty("user.dir")
-						+ props.getProperty("ChromeDriverWindows");
+				ChromeDriverPath = System.getProperty("user.dir") + props.getProperty("ChromeDriverWindows");
 
 				System.setProperty("webdriver.chrome.driver", ChromeDriverPath);
-				System.setProperty("webdriver.chrome.logfile", "D:\\chromedriver.log");
-				System.setProperty("webdriver.chrome.verboseLogging", "true");
+				System.setProperty("webdriver.chrome.silentOutput", "true");
 				ChromeOptions options = new ChromeOptions();
-				
-				options.setBinary(ChromeDriverPath);
-				//options.addArguments("--no-sandbox");
-				options.addArguments("--disable-dev-shm-usage");
-				options.setExperimentalOption("useAutomationExtension", false);
-				//options.addArguments("--log-level=3");
-				
-				LoggingPreferences preferences = new LoggingPreferences();
-			    preferences.enable(LogType.BROWSER, Level.INFO);
-			    options.setCapability(CapabilityType.LOGGING_PREFS, preferences);
 
-			    DesiredCapabilities theCapabilities = DesiredCapabilities.chrome();
-			    theCapabilities.setCapability(ChromeOptions.CAPABILITY, options);
-                
 				String Type = props.getProperty("Type");
 
 				if (Type.equals("Local")) {
+
 					wbdriver.set(new ChromeDriver(options));
 					wbdriver.get().manage().window().maximize();
 					wbdriver.get().manage().timeouts().pageLoadTimeout(200, TimeUnit.SECONDS);
@@ -128,10 +111,8 @@ public class start {
 
 				} else {
 					String IPAddress = props.getProperty("IPAddress");
-					remotedriver.set(new RemoteWebDriver(new URL(
-							"http://localhost:4444/wd/hub"), theCapabilities));
-					remotedriver.set(new RemoteWebDriver(new URL(IPAddress),
-							theCapabilities));
+					remotedriver.set(new RemoteWebDriver(new URL("http://localhost:4444/wd/hub"), options));
+					remotedriver.set(new RemoteWebDriver(new URL(IPAddress), options));
 					driver = remotedriver.get();
 					driver.manage().window().maximize();
 					driver.get(props.getProperty("URL"));
@@ -152,7 +133,7 @@ public class start {
 	}
 
 	public synchronized void set_Logger(ExtentTest tst) {
-		ExtTest.setTest(tst);	
+		ExtTest.setTest(tst);
 	}
 
 	public Properties getPropertiesValues(String filePath) {

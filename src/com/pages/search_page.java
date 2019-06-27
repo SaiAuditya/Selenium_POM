@@ -17,7 +17,7 @@ public class search_page extends pagefactory {
 
 	reference ref = null;
 
-	@FindBy(partialLinkText = "consolidatedchaos")
+	@FindBy(partialLinkText = "LinkedIn: Log In or Sign Up")
 	public WebElement myblogslink;
 	
 	public search_page(WebDriver driver) {
@@ -29,14 +29,25 @@ public class search_page extends pagefactory {
 		
 	}
 
-	public search_page opensite()
+	/*
+	 * Opens the site and returns the search page object for subsequent operations on the page.
+	 */
+	public search_page open_site(String siteLinkText)
 	{
 		WebDriverWait wait = new WebDriverWait(driver, 30);
 		wait.ignoring(NoSuchElementException.class);
-		wait.until(ExpectedConditions.presenceOfElementLocated(By.partialLinkText("consolidatedchaos")));
-		myblogslink.click();
-		ExtTest.getTest().log(LogStatus.PASS, "Site opened successfully"
-				+ ExtTest.getTest().addScreenCapture(ref.getScreenshot()));
+		WebElement link = wait.until(ExpectedConditions.presenceOfElementLocated(By.partialLinkText(siteLinkText)));
+		try
+		{
+			link.click();
+			ExtTest.getTest().log(LogStatus.PASS, "clicked on site successfully");
+					
+		}catch(Exception e)
+		{
+			ExtTest.getTest().log(LogStatus.FAIL, "Site link not found"
+					+ ExtTest.getTest().addScreenCapture(ref.getScreenshot()));
+		}
+		
 		return this;
 	}
 }

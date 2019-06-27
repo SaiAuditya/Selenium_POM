@@ -15,49 +15,19 @@ public class landing_page extends pagefactory {
 
 	reference ref = null;
 
-	@FindBy(linkText = "MY PROFILE")
-	public WebElement myprofile;
+	@FindBy(name = "btnK")
+	public WebElement googleSearch;
 
-	@FindBy(linkText = "LOGOUT")
-	public WebElement logout;
+	@FindBy(name = "btnI")
+	public WebElement googleFeelingLucky;
 
 	public landing_page(WebDriver driver) {
 		super(driver);
 		AjaxElementLocatorFactory agaxFactory = new AjaxElementLocatorFactory(
 				driver, 100);
 		PageFactory.initElements(agaxFactory, this);
-		//this.test=test;
 		ref = new reference(driver);
 	}
 
-	public landing_page checkmyprofilelink() {
-		if (myprofile.isDisplayed()) {
-			ExtTest.getTest().log(
-					LogStatus.PASS,
-					"Myprofle link is displayed"
-							+ ExtTest.getTest().addScreenCapture(ref.getScreenshot()));
-		} else {
-			ExtTest.getTest().log(LogStatus.FAIL, "Myprofle link is NOT displayed"
-					+ ExtTest.getTest().addScreenCapture(ref.getScreenshot()));
-		}
-		return this;
-	}
-
-	public landing_page logout() {
-		try {
-			logout.click();
-			ExtTest.getTest().log(
-					LogStatus.PASS,
-					"logout link is clicked"
-							+ ExtTest.getTest().addScreenCapture(ref.getScreenshot()));
-		} catch (Exception e) {
-			ExtTest.getTest().log(
-					LogStatus.FAIL,
-					"logout link is NOT clicked"
-							+ ExtTest.getTest().addScreenCapture(ref.getScreenshot()));
-		}
-
-		return this;
-	}
 
 }

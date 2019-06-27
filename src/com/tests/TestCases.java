@@ -31,138 +31,89 @@ public class TestCases {
 
 	@AfterSuite
 	public void aftersuite() {
-	
+
 		System.out.println("Calling after suite");
 	}
-	
+
 	@BeforeTest
-	public void beforeTest()
-	{
+	public void beforeTest() {
 		System.out.println("Calling before test");
 	}
-	
+
 	@AfterTest
-	public void afterTest()
-	{
+	public void afterTest() {
 		System.out.println("Calling after test");
 	}
+
 	@BeforeGroups("Sanity")
-	public void beforeGroups(){
+	public void beforeGroups() {
 		System.out.println("Calling before groups");
 	}
-	
+
 	@AfterGroups("Sanity")
-	public void afterGroups()
-	{
+	public void afterGroups() {
 		System.out.println("Calling after groups");
 	}
+
 	@BeforeClass
-	public void beforeClass()
-	{
+	public void beforeClass() {
 		System.out.println("Calling before class");
 	}
+
 	@AfterClass
-	public void afterClass()
-	{
+	public void afterClass() {
 		System.out.println("Calling after class");
 	}
+
 	@BeforeMethod
-	public void beforeMethod()
-	{
+	public void beforeMethod() {
 		System.out.println("Calling before method");
 	}
+
 	@AfterMethod
-	public void afterMethod()
-	{
+	public void afterMethod() {
 		System.out.println("Calling after method");
 	}
 
-	
-	@Test(enabled = false, groups = {"Sanity"})
-	public void login_Test_Case_01() {
+	@Test(enabled = true, groups = { "Sanity" })
+	public void Google_Search_Test() {
 		try {
+
+			// gets the method name
 			String SheetName = Thread.currentThread().getStackTrace()[1].getMethodName();
-			System.out.println(SheetName);
+
+			// sets the xldriver to point to sheet where variables are stored
 			start.xldriver.SetExcelSheet(SheetPath, SheetName);
+
+			// starts this test method as extent test
 			ExtentTest test = extent.startTest(SheetName);
+
+			// iterates for number of rows presents in the xl.
 			int rows = start.xldriver.get_used_rows();
 			for (int i = 1; i <= rows; i++) {
-
+				
+				//getting the value from test data excel sheet
+				String textToSearch = start.xldriver.getExcelData("TextToSearch", i);
+				
+				//starting the test using the POM and returning the page objects creating the test flow
 				st = new start();
 				st.set_Logger(test);
-				String username = start.xldriver.getExcelData("username", i);
-				System.out.println("username " + username);
-
-				st.launch_browser().goTo_Home().set_text("Parallel testing").click_search();
+				
+				//calls the test methods
+				st
+				.launch_browser()
+				.goTo_Home()
+				.set_text(textToSearch)
+				.click_search()
+				.goTo_searchPage()
+				.open_site(textToSearch).goTo_Home()
+				.verify_page_title(textToSearch);
 			}
 
 		} catch (Exception e) {
 			ExtTest.getTest().log(LogStatus.FAIL, "unexpected error " + e.getStackTrace().toString());
 			e.printStackTrace();
-
-		} finally {
-			extent.flush();
-		}
-	}
-
-	@Test(enabled = false)
-	public void login_Test_Case_02() {
-		try {
-			String SheetName = Thread.currentThread().getStackTrace()[1].getMethodName();
-			System.out.println("Test2");
-			start.xldriver.SetExcelSheet(SheetPath, "login_Test_Case_01");
-			// start.set_Logger(SheetName);
-			ExtentTest test = extent.startTest(SheetName);
-
-			int rows = start.xldriver.get_used_rows();
-
-			for (int i = 1; i <= rows; i++) {
-
-				st = new start();
-				st.set_Logger(test);
-				String username = start.xldriver.getExcelData("username", i);
-				String password = start.xldriver.getExcelData("password", i);
-				System.out.println("Password " + password);
-				System.out.println("Password " + username);
-				st.launch_browser().goTo_Home().set_text("thread safe programme").click_search();
-
-			}
-
-		} catch (Exception e) {
-			ExtTest.getTest().log(LogStatus.FAIL, "unexpected error " + e.getStackTrace().toString());
-			e.printStackTrace();
-
-		} finally {
-			extent.flush();
-		}
-	}
-
-	@Test(enabled = true, groups = {"Sanity"})
-	public void login_Test_Case_03() {
-		try {
-			String SheetName = Thread.currentThread().getStackTrace()[1].getMethodName();
-
-			start.xldriver.SetExcelSheet(SheetPath, "login_Test_Case_01");
 			
-			ExtentTest test = extent.startTest(SheetName);
-			int rows = start.xldriver.get_used_rows();
-
-			for (int i = 1; i <= rows; i++) {
-
-				st = new start();
-				st.set_Logger(test);
-				
-				String username = start.xldriver.getExcelData("username", i);
-				String password = start.xldriver.getExcelData("password", i);
-				
-				st.launch_browser().goTo_Home().set_text("ConsolidatedChaos").click_search().goTo_searchPage()
-						.opensite();
-
-			}
-
-		} catch (Exception e) {
-			ExtTest.getTest().log(LogStatus.FAIL, "unexpected error " + e.getStackTrace().toString());
-			e.printStackTrace();
 		} finally {
 			extent.flush();
 		}
