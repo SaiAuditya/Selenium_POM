@@ -118,6 +118,50 @@ public class TestCases {
 			extent.flush();
 		}
 	}
+	
+	@Test(enabled = true, groups = { "Sanity" })
+	public void Google_Search_Test_2() {
+		try {
+
+			// gets the method name
+			String SheetName = Thread.currentThread().getStackTrace()[1].getMethodName();
+
+			// sets the xldriver to point to sheet where variables are stored
+			start.xldriver.SetExcelSheet(SheetPath, SheetName);
+
+			// starts this test method as extent test
+			ExtentTest test = extent.startTest(SheetName);
+
+			// iterates for number of rows presents in the xl.
+			int rows = start.xldriver.get_used_rows();
+			for (int i = 1; i <= rows; i++) {
+				
+				//getting the value from test data excel sheet
+				String textToSearch = start.xldriver.getExcelData("TextToSearch", i);
+				
+				//starting the test using the POM and returning the page objects creating the test flow
+				st = new start();
+				st.set_Logger(test);
+				
+				//calls the test methods
+				st
+				.launch_browser()
+				.goTo_Home()
+				.set_text(textToSearch)
+				.click_search()
+				.goTo_searchPage()
+				.open_site(textToSearch).goTo_Home()
+				.verify_page_title(textToSearch);
+			}
+
+		} catch (Exception e) {
+			ExtTest.getTest().log(LogStatus.FAIL, "unexpected error " + e.getStackTrace().toString());
+			e.printStackTrace();
+			
+		} finally {
+			extent.flush();
+		}
+	}
 
 	@AfterClass
 	public void flush_test() {
