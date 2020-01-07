@@ -86,12 +86,12 @@ public class TestCases {
 			start.xldriver.SetExcelSheet(SheetPath, SheetName);
 
 			// starts this test method as extent test
-			ExtentTest test = extent.startTest(SheetName);
+			
 
 			// iterates for number of rows presents in the xl.
 			int rows = start.xldriver.get_used_rows();
 			for (int i = 1; i <= rows; i++) {
-				
+				ExtentTest test = extent.startTest(SheetName+"_iteration_"+i);
 				//getting the value from test data excel sheet
 				String textToSearch = start.xldriver.getExcelData("TextToSearch", i);
 				
@@ -107,7 +107,8 @@ public class TestCases {
 				.click_search()
 				.goTo_searchPage()
 				.open_site(textToSearch).goTo_Home()
-				.verify_page_title(textToSearch);
+				.verify_page_title(textToSearch).tearDown();
+				extent.flush();
 			}
 
 		} catch (Exception e) {
@@ -130,12 +131,13 @@ public class TestCases {
 			start.xldriver.SetExcelSheet(SheetPath, SheetName);
 
 			// starts this test method as extent test
-			ExtentTest test = extent.startTest(SheetName);
+			//ExtentTest test = extent.startTest(SheetName);
 
 			// iterates for number of rows presents in the xl.
 			int rows = start.xldriver.get_used_rows();
 			for (int i = 1; i <= rows; i++) {
 				
+				ExtentTest test = extent.startTest(SheetName+"_iteration_"+i);
 				//getting the value from test data excel sheet
 				String textToSearch = start.xldriver.getExcelData("TextToSearch", i);
 				
@@ -151,11 +153,12 @@ public class TestCases {
 				.click_search()
 				.goTo_searchPage()
 				.open_site(textToSearch).goTo_Home()
-				.verify_page_title(textToSearch);
+				.verify_page_title(textToSearch).tearDown();
+				extent.flush();
 			}
 
 		} catch (Exception e) {
-			ExtTest.getTest().log(LogStatus.FAIL, "unexpected error " + e.getStackTrace().toString());
+			ExtTest.getTest().log(LogStatus.FAIL, "unexpected error " + e.getMessage());
 			e.printStackTrace();
 			
 		} finally {

@@ -67,7 +67,7 @@ public class start {
 				options.setCapability(CapabilityType.SUPPORTS_JAVASCRIPT, true);
 				options.setCapability(CapabilityType.SUPPORTS_APPLICATION_CACHE, false);
 				System.setProperty("webdriver.ie.driver", IEDriverPath);
-
+					
 				wbdriver.set(new InternetExplorerDriver(options));
 				driver = wbdriver.get();
 
@@ -99,6 +99,7 @@ public class start {
 				System.setProperty("webdriver.chrome.driver", ChromeDriverPath);
 				System.setProperty("webdriver.chrome.silentOutput", "true");
 				ChromeOptions options = new ChromeOptions();
+				//options.setExperimentalOption("useAutomationExtension", false);
 
 				String Type = props.getProperty("Type");
 
