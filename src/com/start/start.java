@@ -37,8 +37,9 @@ public class start {
 	public static String browser = "", IEDriverPath = "", ChromeDriverPath = "", AppUrl = "", FirefoxDriverPath = "";
 
 	public WebDriver driver = null;
+	public ExcelManager xldriver = null;
 	public static String url;
-	public static ExcelManager xldriver = new ExcelManager();
+	public static ThreadLocal<ExcelManager> tlxldriver = new ThreadLocal<>();
 
 	public ThreadLocal<ExtentTest> logging = new ThreadLocal<>();
 
@@ -90,11 +91,14 @@ public class start {
 				wbdriver.get().manage().window().maximize();
 				wbdriver.get().manage().timeouts().pageLoadTimeout(200, TimeUnit.SECONDS);
 				wbdriver.get().get(props.getProperty("URL"));
+				
+				
 
 
 			} else if (browser.equalsIgnoreCase("Chrome")) {
 				System.out.println("In Chrome Browser");
 				ChromeDriverPath = System.getProperty("user.dir") + props.getProperty("ChromeDriverWindows");
+				//System.setProperty("webdriver.chrome.driver", value)
 
 				System.setProperty("webdriver.chrome.driver", ChromeDriverPath);
 				System.setProperty("webdriver.chrome.silentOutput", "true");
@@ -108,6 +112,7 @@ public class start {
 					wbdriver.set(new ChromeDriver(options));
 					wbdriver.get().manage().window().maximize();
 					wbdriver.get().manage().timeouts().pageLoadTimeout(200, TimeUnit.SECONDS);
+					wbdriver.get().manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
 					wbdriver.get().get(props.getProperty("URL"));
 
 				} else {
@@ -135,6 +140,21 @@ public class start {
 
 	public synchronized void set_Logger(ExtentTest tst) {
 		ExtTest.setTest(tst);
+	}
+	
+	public void set_excelDriver(String SheetPath,String sheetName) throws IOException
+	{
+		ExcelManager ex = new ExcelManager();
+		ex.SetExcelSheet(SheetPath, sheetName);
+		//if(tlxldriver.get()!= null)
+		//{
+		tlxldriver.set(ex);	
+		//}
+	}
+	
+	public ExcelManager get_ExcelDriver()
+	{
+		return tlxldriver.get();
 	}
 
 	public Properties getPropertiesValues(String filePath) {

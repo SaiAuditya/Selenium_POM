@@ -7,8 +7,8 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class ExcelManager {
-	public static XSSFWorkbook ExcelWorkBook;
-	public static XSSFSheet ExcelWorkSheet;
+	public  XSSFWorkbook ExcelWorkBook;
+	public  XSSFSheet ExcelWorkSheet;
 
 	public void SetExcelSheet(String SheetPath, String SheetName)
 			throws IOException {

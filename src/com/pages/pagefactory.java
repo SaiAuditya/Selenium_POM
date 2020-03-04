@@ -28,6 +28,11 @@ public class pagefactory {
 		return new search_page(driver);
 	}
 	
+	public gmailpages goTo_gmailpage()
+	{
+		return new gmailpages(driver);
+	}
+	
 	public void tearDown() {
 
 		try {

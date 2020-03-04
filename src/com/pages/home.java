@@ -109,7 +109,11 @@ public class home extends pagefactory {
 		else
 			ExtTest.getTest().log(LogStatus.FAIL, "site is down or internet may causing the issue"
 					+ ExtTest.getTest().addScreenCapture(ref.getScreenshot()));
+			
 	  	return this;
 	}
 
+	
+	
+		
 }
