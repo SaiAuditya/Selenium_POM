@@ -273,7 +273,7 @@ public class TestCases {
 	@Test
 	public void test1()
 	{
-		System.out.println("test1");
+		System.out.println("test3");
 	}
 	
 	@Test
