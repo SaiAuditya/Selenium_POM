@@ -39,7 +39,7 @@ public class start {
 	public WebDriver driver = null;
 	public ExcelManager xldriver = null;
 	public static String url;
-	public static ThreadLocal<ExcelManager> tlxldriver = new ThreadLocal<>();
+	public static ThreadLocal<ExcelManager> tlxldriver = new ThreadLocal<ExcelManager>();
 
 	public ThreadLocal<ExtentTest> logging = new ThreadLocal<>();
 

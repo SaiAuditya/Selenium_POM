@@ -1,5 +1,9 @@
 package com.tests;
 
+import java.sql.Date;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterGroups;
 import org.testng.annotations.AfterMethod;
@@ -22,7 +26,9 @@ public class TestCases {
 	public start st = null;
 	public static String SheetPath = "./data/TestData.xlsx";
 	public ExtentReports extent = ExtReport.getReport();
-
+	DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
+	   
+	  
 	@BeforeSuite
 	public void beforesuite() {
 
@@ -75,7 +81,7 @@ public class TestCases {
 		System.out.println("Calling after method");
 	}
 
-	/*
+	
 	@Test(enabled = true, groups = { "Sanity" })
 	public void Google_Search_Test() {
 		try {
@@ -83,20 +89,14 @@ public class TestCases {
 			// gets the method name
 			String SheetName = Thread.currentThread().getStackTrace()[1].getMethodName();
 
-			// sets the xldriver to point to sheet where variables are stored
-			//start.xldriver.SetExcelSheet(SheetPath, SheetName);
-
-			// starts this test method as extent test
 			
             int rows=2;
 			// iterates for number of rows presents in the xl.
 			
 			for (int i = 1; i <= rows; i++) {
 				ExtentTest test = extent.startTest(SheetName+"_iteration_"+i);
+				extent.addSystemInfo("Start Time",dtf.format(LocalDateTime.now()));
 				
-			
-				//getting the value from test data excel sheet
-			
 				
 				//starting the test using the POM and returning the page objects creating the test flow
 				st = new start();
@@ -113,6 +113,9 @@ public class TestCases {
 				.goTo_searchPage()
 				.open_site(textToSearch).goTo_Home()
 				.verify_page_title(textToSearch).tearDown();
+				
+				extent.addSystemInfo("End Time",dtf.format(LocalDateTime.now()));
+				extent.endTest(test);
 				extent.flush();
 			}
 
@@ -121,6 +124,7 @@ public class TestCases {
 			e.printStackTrace();
 			
 		} finally {
+			//extent.endTest(test);
 			extent.flush();
 		}
 	}
@@ -132,12 +136,6 @@ public class TestCases {
 			// gets the method name
 			String SheetName = Thread.currentThread().getStackTrace()[1].getMethodName();
 
-			// sets the xldriver to point to sheet where variables are stored
-			
-			// starts this test method as extent test
-			//ExtentTest test = extent.startTest(SheetName);
-
-			// iterates for number of rows presents in the xl.
 			int rows = 2;
 			for (int i = 1; i <= rows; i++) {
 				
@@ -160,6 +158,8 @@ public class TestCases {
 				.goTo_searchPage()
 				.open_site(textToSearch).goTo_Home()
 				.verify_page_title(textToSearch).tearDown();
+				System.out.println("Calling end Test in extent");
+				extent.endTest(test);
 				extent.flush();
 			}
 
@@ -175,100 +175,8 @@ public class TestCases {
 	@AfterClass
 	public void flush_test() {
 		extent.flush();
-	}*/
-	
-	/*@Test(enabled = true, groups = { "Sanity" })
-	public void Gmail_Test_1() {
-		try {
-
-			// gets the method name
-			String SheetName = Thread.currentThread().getStackTrace()[1].getMethodName();
-
-			// sets the xldriver to point to sheet where variables are stored
-			//start.xldriver.SetExcelSheet(SheetPath, SheetName);
-
-			// starts this test method as extent test
-			
-            int rows=2;
-			// iterates for number of rows presents in the xl.
-			
-			for (int i = 1; i <= rows; i++) {
-				ExtentTest test = extent.startTest(SheetName+"_iteration_"+i);
-				
-			
-				//getting the value from test data excel sheet
-			
-				
-				//starting the test using the POM and returning the page objects creating the test flow
-				st = new start();
-				st.set_excelDriver(SheetPath, SheetName);
-				rows=st.get_ExcelDriver().get_used_rows();
-				st.set_Logger(test);
-				String username =st.get_ExcelDriver().getExcelData("Username", i);
-				String pass = st.get_ExcelDriver().getExcelData("password", i);
-			
-				st
-				.launch_browser()
-				.goTo_gmailpage().set_text_username(username).user_next_click().set_text_password(pass).pass_next_click().click_on_compose().enter_to_and_subject(username, "Test Email");
-			
-				extent.flush();
-			}
-
-		} catch (Exception e) {
-			ExtTest.getTest().log(LogStatus.FAIL, "unexpected error " + e.getStackTrace().toString());
-			e.printStackTrace();
-			
-		} finally {
-			extent.flush();
-		}
 	}
 	
-	/*
-	@Test(enabled = true, groups = { "Sanity" })
-	public void Gmail_Test_2() {
-		try {
-
-			// gets the method name
-			String SheetName = Thread.currentThread().getStackTrace()[1].getMethodName();
-
-			// sets the xldriver to point to sheet where variables are stored
-			//start.xldriver.SetExcelSheet(SheetPath, SheetName);
-
-			// starts this test method as extent test
-			
-            int rows=2;
-			// iterates for number of rows presents in the xl.
-			
-			for (int i = 1; i <= rows; i++) {
-				ExtentTest test = extent.startTest(SheetName+"_iteration_"+i);
-				
-			
-				//getting the value from test data excel sheet
-			
-				
-				//starting the test using the POM and returning the page objects creating the test flow
-				st = new start();
-				st.set_excelDriver(SheetPath, SheetName);
-				rows=st.get_ExcelDriver().get_used_rows();
-				st.set_Logger(test);
-				String username =st.get_ExcelDriver().getExcelData("Username", i);
-				String pass = st.get_ExcelDriver().getExcelData("password", i);
-			
-				st
-				.launch_browser()
-				.goTo_gmailpage().set_text_username(username).user_next_click().set_text_password(pass).pass_next_click().click_on_compose().enter_to_and_subject(username, "Test Email");
-			
-				extent.flush();
-			}
-
-		} catch (Exception e) {
-			ExtTest.getTest().log(LogStatus.FAIL, "unexpected error " + e.getStackTrace().toString());
-			e.printStackTrace();
-			
-		} finally {
-			extent.flush();
-		}
-	}*/
 	
 	@Test
 	public void test1()

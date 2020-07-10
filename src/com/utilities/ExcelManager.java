@@ -6,14 +6,31 @@ import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import com.relevantcodes.extentreports.ExtentTest;
+
 public class ExcelManager {
+	
+	
+	public static ThreadLocal<XSSFWorkbook>  threadSafeExcelManager = new ThreadLocal<XSSFWorkbook>();
 	public  XSSFWorkbook ExcelWorkBook;
 	public  XSSFSheet ExcelWorkSheet;
+	
+	
+	public static synchronized XSSFWorkbook getTest()
+	{
+		return threadSafeExcelManager.get();
+	}
+	
+	//setting the test
+	public static void setTest(XSSFWorkbook book) {
+		threadSafeExcelManager.set(book);	
+	}
+	
 
 	public void SetExcelSheet(String SheetPath, String SheetName)
 			throws IOException {
-		ExcelWorkBook = new XSSFWorkbook(SheetPath);
-		ExcelWorkSheet = ExcelWorkBook.getSheet(SheetName);
+		threadSafeExcelManager.set(new XSSFWorkbook(SheetPath));
+		ExcelWorkSheet = threadSafeExcelManager.get().getSheet(SheetName);
 	}
 
 	public int get_used_rows() {
